@@ -8,16 +8,21 @@ import com.sahansenvar.core.common.response.onLoading
 import com.sahansenvar.core.common.response.onSuccess
 import com.sahansenvar.feature.trading.domain.usecases.GetOrderBookUseCase
 import com.sahansenvar.feature.trading.domain.usecases.GetCandleInfoUseCase
-import com.sahansenvar.feature.trading.presentation.uiStates.TradingUiState
+import com.sahansenvar.feature.trading.presentation.uiStates.ChartUiState
+import com.sahansenvar.feature.trading.presentation.uiStates.OrderBookUiState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class TradingViewModel(
+class ChartViewModel(
     private val getCandleInfo: GetCandleInfoUseCase,
     private val getOrderBook: GetOrderBookUseCase
-) : BaseViewModel<TradingUiState>(TradingUiState()) {
+) : BaseViewModel<ChartUiState>(ChartUiState()) {
+
 
     fun getCandleDatas(
         tradingUnit: String,
@@ -31,7 +36,9 @@ class TradingViewModel(
             }
             onSuccess { result ->
                 Log.i("exziInfo", "network result:  $result")
-                _state.value = state.value.copy(candles = result)
+                delay(2000L)
+                _state.emit(state.value.copy(candles = result))
+                //_candleData.value = result
             }
             onFailure {
                 Log.i("exziInfo", "network error: $it")
@@ -48,7 +55,7 @@ class TradingViewModel(
             }
             onSuccess { result ->
                 Log.i("exziInfo", "network result:  $result")
-                _state.value = state.value.copy(orderBook = result)
+                _state.emit(state.value.copy(orderBook = result))
             }
             onFailure {
                 Log.i("exziInfo", "network error: $it")
