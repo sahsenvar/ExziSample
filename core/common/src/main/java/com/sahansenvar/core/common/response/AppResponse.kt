@@ -39,7 +39,7 @@ fun <DATA, CAUSE : AppError> AppResponse<DATA, CAUSE>.onLoading(block: () -> Uni
     return this
 }
 
-fun <DATA, CAUSE : AppError> AppResponse<DATA, CAUSE>.onSuccess(block: (DATA) -> Unit): AppResponse<DATA, CAUSE> {
+inline fun <DATA, CAUSE : AppError> AppResponse<DATA, CAUSE>.onSuccess(block: (DATA) -> Unit): AppResponse<DATA, CAUSE> {
     if (this is AppResponse.Success)
         block.invoke(data)
     return this

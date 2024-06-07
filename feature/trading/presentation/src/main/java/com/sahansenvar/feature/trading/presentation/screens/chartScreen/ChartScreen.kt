@@ -2,30 +2,33 @@ package com.sahansenvar.feature.trading.presentation.screens.chartScreen
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sahansenvar.core.common.AppDirection
 import com.sahansenvar.core.common.extentions.inject
+import com.sahansenvar.feature.trading.domain.models.CandleDomain
+import com.sahansenvar.feature.trading.domain.models.OrderBookDomain
 import com.sahansenvar.feature.trading.presentation.action.TradingActions
 import com.sahansenvar.feature.trading.presentation.navigation.TradingNavigator
 import com.sahansenvar.feature.trading.presentation.screenComponents.rows.ChartAndInfoTabRow
 import com.sahansenvar.feature.trading.presentation.screenComponents.rows.ChartAndInfoTabs
 import com.sahansenvar.feature.trading.presentation.screens.chartScreen.chartAndInfoTabs.ChartTabPage
 import com.sahansenvar.feature.trading.presentation.screens.chartScreen.chartAndInfoTabs.InfoTabPage
-import com.sahansenvar.feature.trading.presentation.uiStates.TradingUiState
-import com.sahansenvar.feature.trading.presentation.viewModels.TradingViewModel
+import com.sahansenvar.feature.trading.presentation.uiStates.ChartUiState
+import com.sahansenvar.feature.trading.presentation.uiStates.OrderBookUiState
+import com.sahansenvar.feature.trading.presentation.viewModels.ChartViewModel
 
 
 @Composable
 fun ChartScreen(
-    viewModel: TradingViewModel = inject(),
+    viewModel: ChartViewModel = inject(),
     navigator: TradingNavigator = inject(),
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-    ChartPage(state = state) { action ->
+    val state by viewModel.state.collectAsStateWithLifecycle(initialValue = ChartUiState())
+    ChartPage(
+        candles = state.candles,
+        orderbook = state.orderBook
+    ) { action ->
         when (action) {
             is TradingActions.GetOrderBook -> viewModel.getOrderBook()
             is TradingActions.NavigateToChartScreen -> navigator.goToGraphScreen(action.title)
@@ -38,7 +41,8 @@ fun ChartScreen(
 @Composable
 fun ChartPage(
     modifier: Modifier = Modifier,
-    state: TradingUiState,
+    orderbook: OrderBookDomain,
+    candles: List<CandleDomain>,
     onAction: (TradingActions) -> Unit
 ) {
     ChartAndInfoTabRow(
@@ -48,7 +52,8 @@ fun ChartPage(
     ) { currentPage ->
         when (currentPage) {
             ChartAndInfoTabs.Chart.ordinal -> ChartTabPage(
-                state = state,
+                candles = candles,
+                orderBook = orderbook,
                 onAction = onAction
             )
 
@@ -56,7 +61,6 @@ fun ChartPage(
         }
 
     }
-
 }
 
 //@Preview

@@ -1,6 +1,6 @@
 package com.sahansenvar.trading.data.mappers
 
-import com.sahansenvar.feature.trading.domain.models.TradingDomain
+import com.sahansenvar.feature.trading.domain.models.CandleDomain
 import com.sahansenvar.trading.data.models.TradingData
 import org.koin.core.annotation.Factory
 
@@ -9,7 +9,7 @@ class TradingMapper {
 
     fun mapToDomain(inValue: TradingData?) = kotlin.runCatching{
         requireNotNull(inValue)
-        TradingDomain(
+        CandleDomain(
             close = requireNotNull(inValue.close),
             closeF = requireNotNull(inValue.closeF),
             high = requireNotNull(inValue.high),
@@ -24,7 +24,7 @@ class TradingMapper {
         )
     }.getOrNull()
 
-    fun mapToDomain(inValue: Collection<TradingData>): List<TradingDomain>{
+    fun mapToDomain(inValue: Collection<TradingData>): List<CandleDomain>{
         return inValue.mapNotNull { mapToDomain(it) }
     }
 }

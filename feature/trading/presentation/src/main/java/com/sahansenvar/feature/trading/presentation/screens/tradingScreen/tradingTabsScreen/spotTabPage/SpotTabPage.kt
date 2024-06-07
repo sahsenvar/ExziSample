@@ -16,11 +16,11 @@ import com.sahansenvar.feature.trading.presentation.action.TradingActions
 import com.sahansenvar.feature.trading.presentation.screens.tradingScreen.tradingTabsScreen.spotTabPage.myOrdersTabPage.MyOrdersTabRow
 import com.sahansenvar.feature.trading.presentation.screens.tradingScreen.tradingTabsScreen.spotTabPage.orderBookPage.OrderBookFormPage
 import com.sahansenvar.feature.trading.presentation.screens.tradingScreen.tradingTabsScreen.spotTabPage.orderEntryTabPage.OrderEntryForm
-import com.sahansenvar.feature.trading.presentation.uiStates.TradingUiState
+import com.sahansenvar.feature.trading.presentation.uiStates.OrderBookUiState
 
 @Composable
 fun SpotTabPage(
-    state: TradingUiState,
+    state: OrderBookUiState,
     onAction: (TradingActions) -> Unit
 ) {
     var amountTextFieldValue by remember { mutableStateOf("")}
@@ -57,7 +57,7 @@ fun SpotTabPage(
 @Composable
 fun Preview() {
     SpotTabPage(
-        state = TradingUiState(),
+        state = OrderBookUiState(),
     ){
 
     }

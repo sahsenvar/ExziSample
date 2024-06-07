@@ -4,20 +4,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.sahansenvar.feature.trading.domain.models.OrderBookDomain
 import com.sahansenvar.feature.trading.presentation.action.TradingActions
 import com.sahansenvar.feature.trading.presentation.screenComponents.forms.OrderBookForm
 import com.sahansenvar.feature.trading.presentation.screenComponents.lists.Rotation
 import com.sahansenvar.feature.trading.presentation.screens.tradingScreen.tradingTabsScreen.spotTabPage.orderBookPage.forms.BuyOrSellPosition
-import com.sahansenvar.feature.trading.presentation.uiStates.TradingUiState
 
 @Composable
 fun OrderBookTabPage(
     modifier: Modifier = Modifier,
-    state: TradingUiState,
+    orderBookData: OrderBookDomain,
     onAction: (TradingActions) -> Unit
 ) {
     Column(modifier = modifier) {
@@ -27,7 +26,7 @@ fun OrderBookTabPage(
                 modifier = Modifier.weight(1f),
                 quantityRotation = Rotation.Rtl,
                 buyOrSell = BuyOrSellPosition.Buy,
-                datas = state.orderBook.buy,
+                datas = orderBookData.buy,
                 priceTextColor = Color.White,
                 onClicked = { /*no-op*/ }
             )
@@ -35,14 +34,10 @@ fun OrderBookTabPage(
                 modifier = Modifier.weight(1f),
                 quantityRotation = Rotation.Ltr,
                 buyOrSell = BuyOrSellPosition.Sell,
-                datas = state.orderBook.sell,
+                datas = orderBookData.sell,
                 priceTextColor = Color.White,
                 onClicked = { /*no-op*/ }
             )
         }
-    }
-
-    LaunchedEffect(key1 = "") {
-        onAction(TradingActions.GetOrderBook)
     }
 }

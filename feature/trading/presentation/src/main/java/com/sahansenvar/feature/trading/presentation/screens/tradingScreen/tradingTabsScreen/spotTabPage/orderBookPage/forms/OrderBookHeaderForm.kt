@@ -16,12 +16,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sahansenvar.core.resource.R
 import com.sahansenvar.feature.trading.presentation.action.TradingActions
-import com.sahansenvar.feature.trading.presentation.uiStates.TradingUiState
+import com.sahansenvar.feature.trading.presentation.uiStates.OrderBookUiState
 
 @Composable
 fun OrderBookHeaderForm(
     modifier: Modifier = Modifier,
-    state: TradingUiState,
+    state: OrderBookUiState,
     onAction: (TradingActions) -> Unit
 ) {
     Row(
@@ -53,6 +53,6 @@ fun OrderBookHeaderForm(
 @Composable
 fun Preview() {
     OrderBookHeaderForm(
-        state = TradingUiState()
+        state = OrderBookUiState()
     ) {}
 }

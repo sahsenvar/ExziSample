@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,12 +19,12 @@ import com.sahansenvar.feature.trading.presentation.screenComponents.rows.LastCu
 import com.sahansenvar.feature.trading.presentation.screenComponents.rows.OthersRow
 import com.sahansenvar.feature.trading.presentation.screens.tradingScreen.tradingTabsScreen.spotTabPage.orderBookPage.forms.OrderBookHeaderForm
 import com.sahansenvar.feature.trading.presentation.screens.tradingScreen.tradingTabsScreen.spotTabPage.orderBookPage.forms.BuyOrSellPosition
-import com.sahansenvar.feature.trading.presentation.uiStates.TradingUiState
+import com.sahansenvar.feature.trading.presentation.uiStates.OrderBookUiState
 
 @Composable
 fun OrderBookFormPage(
     modifier: Modifier,
-    state: TradingUiState,
+    state: OrderBookUiState,
     onAction: (TradingActions) -> Unit
 ){
     Column(modifier = modifier) {
@@ -64,7 +63,7 @@ fun OrderBookFormPage(
             quantityRotation = Rotation.Rtl,
             buyOrSell = BuyOrSellPosition.Buy,
             datas = state.orderBook.buy.take(6),
-            onClicked = {onAction(TradingActions.PasteValueToAmountTextField(it)) }
+            onClicked = { onAction(TradingActions.PasteValueToAmountTextField(it)) }
         )
 
         OthersRow(
@@ -76,8 +75,10 @@ fun OrderBookFormPage(
         )
     }
 
+
     LaunchedEffect(key1 = "") {
-        onAction(TradingActions.GetOrderBook)
+        if(state.orderBook.buy.isEmpty())
+            onAction(TradingActions.GetOrderBook)
     }
 
 }
@@ -87,7 +88,7 @@ fun OrderBookFormPage(
 fun Preview() {
     OrderBookFormPage(
         modifier = Modifier.width(150.dp),
-        state = TradingUiState()
+        state = OrderBookUiState()
     ){
 
     }

@@ -20,12 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sahansenvar.core.resource.BuyButton
 import com.sahansenvar.core.resource.ExziText
 import com.sahansenvar.core.resource.SellButton
+import com.sahansenvar.feature.trading.domain.models.CandleDomain
+import com.sahansenvar.feature.trading.domain.models.OrderBookDomain
 import com.sahansenvar.feature.trading.presentation.action.TradingActions
 import com.sahansenvar.feature.trading.presentation.screenComponents.charts.MainChart
 import com.sahansenvar.feature.trading.presentation.screenComponents.charts.SecondaryChart
@@ -39,15 +40,20 @@ import com.sahansenvar.feature.trading.presentation.screenComponents.rows.Values
 import com.sahansenvar.feature.trading.presentation.screens.chartScreen.chartAndInfoTabs.orderBookAndRecentTradingTabs.OrderBookTabPage
 import com.sahansenvar.feature.trading.presentation.screens.chartScreen.chartAndInfoTabs.orderBookAndRecentTradingTabs.RecentTradingTabPage
 import com.sahansenvar.feature.trading.presentation.screens.tradingScreen.tradingTabsScreen.spotTabPage.orderBookPage.forms.BuyOrSellPosition
-import com.sahansenvar.feature.trading.presentation.uiStates.TradingUiState
-import com.sahansenvar.presentation.R
+import com.sahansenvar.feature.trading.presentation.uiStates.ChartUiState
+import com.sahansenvar.feature.trading.presentation.uiStates.OrderBookUiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ChartTabPage(
     modifier: Modifier = Modifier,
-    state: TradingUiState,
+    orderBook: OrderBookDomain,
+    candles: List<CandleDomain>,
     onAction: (TradingActions) -> Unit
 ) {
+
     Box {
         Column(
             modifier = Modifier
@@ -74,12 +80,9 @@ fun ChartTabPage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
-                state = state,
-                onAction = onAction
+                candleDatas = candles
             )
-            LaunchedEffect("state") {
-                    onAction(TradingActions.GetCandlesData)
-            }
+
             SecondaryChart(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -96,7 +99,7 @@ fun ChartTabPage(
             OrderBookAndRecentTradingTabRow { currentPage ->
                 when (currentPage) {
                     OrderBookAndRecentTradingTabs.OrderBook.ordinal -> OrderBookTabPage(
-                        state = state,
+                        orderBookData = orderBook,
                         onAction = onAction
                     )
 
@@ -167,6 +170,17 @@ fun ChartTabPage(
             ) {
 
             }
+        }
+    }
+
+    LaunchedEffect("1") {
+        withContext(Dispatchers.IO) {
+            onAction(TradingActions.GetOrderBook)
+        }
+    }
+    LaunchedEffect("2") {
+        withContext(Dispatchers.IO) {
+            onAction(TradingActions.GetCandlesData)
         }
     }
 }

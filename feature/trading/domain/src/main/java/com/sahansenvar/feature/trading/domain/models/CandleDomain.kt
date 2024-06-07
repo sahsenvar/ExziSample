@@ -3,7 +3,7 @@ package com.sahansenvar.feature.trading.domain.models
 import androidx.annotation.Keep
 
 @Keep
-data class TradingDomain(
+data class CandleDomain(
     val close: Long,
     val closeF: String,
     val high: Long,
