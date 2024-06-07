@@ -18,7 +18,6 @@ data class TradingData(
     @SerialName("open_f")   val openF: String?,
     @SerialName("pair_id")  val pairId: Int?,
     @SerialName("time")     val time: Int?,
-    @SerialName("times")    val times: Times?,
     @SerialName("volume")   val volume: Long?,
     @SerialName("volume_f") val volumeF: String?
 )

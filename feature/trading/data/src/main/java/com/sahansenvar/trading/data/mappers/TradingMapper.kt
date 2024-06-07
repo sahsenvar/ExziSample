@@ -7,11 +7,24 @@ import org.koin.core.annotation.Factory
 @Factory
 class TradingMapper {
 
-    fun mapToDomain(inValue: TradingData): TradingDomain{
-        return TradingDomain()
-    }
+    fun mapToDomain(inValue: TradingData?) = kotlin.runCatching{
+        requireNotNull(inValue)
+        TradingDomain(
+            close = requireNotNull(inValue.close),
+            closeF = requireNotNull(inValue.closeF),
+            high = requireNotNull(inValue.high),
+            highF = requireNotNull(inValue.highF),
+            low = requireNotNull(inValue.low),
+            lowF = requireNotNull(inValue.lowF),
+            open = requireNotNull(inValue.open),
+            openF = requireNotNull(inValue.openF),
+            pairId = requireNotNull(inValue.pairId),
+            volume = requireNotNull(inValue.volume),
+            volumeF = requireNotNull(inValue.volumeF)
+        )
+    }.getOrNull()
 
     fun mapToDomain(inValue: Collection<TradingData>): List<TradingDomain>{
-        return inValue.map { mapToDomain(it) }
+        return inValue.mapNotNull { mapToDomain(it) }
     }
 }
