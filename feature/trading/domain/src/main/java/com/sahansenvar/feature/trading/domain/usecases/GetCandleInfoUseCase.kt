@@ -16,14 +16,11 @@ class GetCandleInfoUseCase(
     dispatcher: CoroutineDispatcher
 ) : BaseUseCase(dispatcher) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         tradingUnit: String,
         limit: Int,
         end: Int,
         onEach: suspend AppResponse<List<TradingDomain>, NetworkError>.() -> Unit
     ) = runAsyncUseCase { tradingRepository.getCandles(tradingUnit, 'D', limit, end) }
-        .onEach(onEach)
-        .catch {
-            AppResponse.Failure(NetworkError.UnknownError(it.message ?: "Unknown Error")).onEach()
-        }
+        .collect(onEach)
 }

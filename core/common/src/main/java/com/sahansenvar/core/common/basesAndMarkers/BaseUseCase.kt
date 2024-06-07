@@ -17,18 +17,17 @@ abstract class BaseUseCase(
     private val dispatcher: CoroutineContext
 ) {
 
-    protected fun runSyncUseCase( block: () -> Unit ){
-
+    protected fun runSyncUseCase(block: () -> Unit) {
+        // ...
     }
 
-    protected fun <DATA, ERROR: AppError> runAsyncUseCase(body: suspend () -> AppResponse<DATA, ERROR>) = flow {
+    protected fun <DATA> runAsyncUseCase(body: suspend () -> DATA) = flow {
         emit(AppResponse.Loading)
-        when (val response: AppResponse<DATA, ERROR> = body.invoke()) {
-            is AppResponse.Success -> emit(AppResponse.Success(response.data))
-            is AppResponse.Failure -> emit(AppResponse.Failure(response.cause))
-            else -> throw Exception("")
+        kotlin.runCatching {
+            val response = body.invoke()
+            emit(AppResponse.Success(response))
+        }.onFailure {
+            emit(AppResponse.Failure(NetworkError.UnknownError(it.message ?: "unknown error")))
         }
-    }.catch {
-        // todo will handle soon
     }.flowOn(dispatcher)
 }

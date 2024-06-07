@@ -46,12 +46,20 @@ android {
 dependencies {
     // Modules
     implementation(project(":core:common"))
+    implementation(project(":core:resource"))
     implementation(project(":feature:trading:domain"))
+    implementation(project(":feature:orderbook:presentation"))
 
     // Koin
     implementation(libs.koin.core)
     implementation(libs.koin.anotation)
+    implementation(project(":feature:orderbook:domain"))
     ksp(libs.koin.kspCompiler)
+
+    // Vico
+    implementation(libs.vico.core)
+    implementation(libs.vico.compose.m3)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

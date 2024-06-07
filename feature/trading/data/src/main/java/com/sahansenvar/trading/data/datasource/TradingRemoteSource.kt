@@ -10,13 +10,13 @@ import retrofit2.http.Url
 
 interface TradingRemoteSource : RemoteSource {
 
-    @GET("/hist")
+    @GET("/graph/hist")
     suspend fun getCandles(
         @Query("t") tradingUnits: String,
         @Query("r") r: Char,
         @Query("limit") limit: Int,
         @Query("end") end: Int
-    ): AppResponse<List<TradingData>, NetworkError>
+    ): List<TradingData>
 
 
 }

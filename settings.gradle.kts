@@ -34,3 +34,4 @@ include(
     ":feature:orderbook:presentation"
 )
 include(":core:common")
+include(":core:resource")

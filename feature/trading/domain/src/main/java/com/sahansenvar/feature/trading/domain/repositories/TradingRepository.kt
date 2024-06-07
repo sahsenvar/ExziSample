@@ -2,6 +2,7 @@ package com.sahansenvar.feature.trading.domain.repositories
 
 import com.sahansenvar.core.common.response.AppResponse
 import com.sahansenvar.core.common.response.NetworkError
+import com.sahansenvar.feature.trading.domain.models.OrderBookDomain
 import com.sahansenvar.feature.trading.domain.models.TradingDomain
 
 interface TradingRepository {
@@ -10,5 +11,12 @@ interface TradingRepository {
         r: Char,
         limit: Int,
         end: Int
-    ): AppResponse<List<TradingDomain>, NetworkError>
+    ): List<TradingDomain>
+
+    suspend fun getOrderBook(
+        pairId: Int,
+        buy: Int,
+        sell: Int
+    ): OrderBookDomain
+
 }

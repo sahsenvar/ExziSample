@@ -1,6 +1,7 @@
 package com.sahansenvar.trading.data.di
 
 import com.sahansenvar.core.remote.services.RemoteService
+import com.sahansenvar.trading.data.datasource.OrderBookRemoteSource
 import com.sahansenvar.trading.data.datasource.TradingRemoteSource
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Factory
@@ -18,5 +19,12 @@ class TradingDataModule {
         @Named("SOCKET") retrofit: Retrofit
     ): TradingRemoteSource{
         return retrofit.create(TradingRemoteSource::class.java)
+    }
+
+    @Factory
+    fun provideOrderBookRemoteSource(
+        @Named("SOCKET") retrofit: Retrofit
+    ): OrderBookRemoteSource{
+        return retrofit.create(OrderBookRemoteSource::class.java)
     }
 }

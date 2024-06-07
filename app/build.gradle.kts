@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 android {
@@ -43,12 +44,15 @@ android {
     ksp {
         arg("KOIN_DEFAULT_MODULE","false")
     }
+
+    sourceSets["main"].res.srcDirs("$projectDir/core/resource/src/main/res")
 }
 
 dependencies {
     // Modules
     implementation(project(":core:common"))
     implementation(project(":core:remote"))
+    implementation(project(":core:resource"))
 
     implementation(project(":feature:orderbook:data"))
     implementation(project(":feature:orderbook:domain"))
@@ -67,6 +71,8 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.compose.runtime)
+
+    implementation(libs.kotlinx.serialization)
 
     //Flipper
     implementation("com.facebook.flipper:flipper:0.176.1")

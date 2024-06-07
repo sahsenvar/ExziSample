@@ -1,30 +1,60 @@
 package com.sahansenvar.feature.trading.presentation.viewModels
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.sahansenvar.core.common.basesAndMarkers.BaseViewModel
-import com.sahansenvar.core.common.response.componentState
+import com.sahansenvar.core.common.response.onFailure
+import com.sahansenvar.core.common.response.onLoading
 import com.sahansenvar.core.common.response.onSuccess
+import com.sahansenvar.feature.trading.domain.usecases.GetOrderBookUseCase
 import com.sahansenvar.feature.trading.domain.usecases.GetCandleInfoUseCase
-import com.sahansenvar.feature.trading.presentation.uiStates.TradingState
-import kotlinx.coroutines.flow.launchIn
+import com.sahansenvar.feature.trading.presentation.uiStates.TradingUiState
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class TradingViewModel(
-    private val getCandleInfo: GetCandleInfoUseCase
-) : BaseViewModel<TradingState>(TradingState()) {
+    private val getCandleInfo: GetCandleInfoUseCase,
+    private val getOrderBook: GetOrderBookUseCase
+) : BaseViewModel<TradingUiState>(TradingUiState()) {
 
-    fun getCandles(
+    fun getCandleDatas(
         tradingUnit: String,
         limit: Int,
         end: Int
-    ) = getCandleInfo(tradingUnit, limit, end) {
-         componentState
-        onSuccess { result ->
-            //_state.value = state.value.copy(tradingList = ComponentState.Success())
+    ) = viewModelScope.launch {
+        getCandleInfo(tradingUnit, limit, end) {
+            onLoading {
+                Log.i("exziInfo", "loading...")
+                // ....
+            }
+            onSuccess { result ->
+                Log.i("exziInfo", "network result:  $result")
+                _state.value = state.value.copy(candles = result)
+            }
+            onFailure {
+                Log.i("exziInfo", "network error: $it")
+                // ....
+            }
         }
+    }
 
-    }.launchIn(viewModelScope)
-
+    fun getOrderBook() = viewModelScope.launch {
+        getOrderBook {
+            onLoading {
+                Log.i("exziInfo", "loading...")
+                // ....
+            }
+            onSuccess { result ->
+                Log.i("exziInfo", "network result:  $result")
+                _state.value = state.value.copy(orderBook = result)
+            }
+            onFailure {
+                Log.i("exziInfo", "network error: $it")
+                // ....
+            }
+        }
+    }
 
 }

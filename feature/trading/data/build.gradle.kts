@@ -44,6 +44,9 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":feature:trading:domain"))
 
+    implementation(project(":feature:orderbook:data"))
+    implementation(project(":feature:orderbook:domain"))
+
     // Koin
     implementation(libs.koin.core)
     implementation(libs.koin.anotation)

@@ -12,9 +12,6 @@ import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.soloader.SoLoader
 import com.sahansenvar.core.remote.di.RemoteModule
-import com.sahansenvar.feature.orderbook.data.di.OrderBookDataModule
-import com.sahansenvar.feature.orderbook.domain.di.OrderBookDomainModule
-import com.sahansenvar.feature.orderbook.presentation.di.OrderBookPresentationModule
 import com.sahansenvar.feature.trading.domain.di.TradingDomainModule
 import com.sahansenvar.feature.trading.presentation.di.TradingPresentationModule
 import com.sahansenvar.trading.data.di.TradingDataModule
@@ -43,10 +40,6 @@ class ExziApp : Application() {
             TradingDataModule().module,
             TradingDomainModule().module,
             TradingPresentationModule().module,
-
-            OrderBookDataModule().module,
-            OrderBookDomainModule().module,
-            OrderBookPresentationModule().module
         )
     }
 
