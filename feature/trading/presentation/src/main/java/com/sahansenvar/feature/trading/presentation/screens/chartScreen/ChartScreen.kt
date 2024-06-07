@@ -3,8 +3,10 @@ package com.sahansenvar.feature.trading.presentation.screens.chartScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sahansenvar.core.common.extentions.inject
 import com.sahansenvar.feature.trading.domain.models.CandleDomain
 import com.sahansenvar.feature.trading.domain.models.OrderBookDomain
@@ -15,8 +17,10 @@ import com.sahansenvar.feature.trading.presentation.screenComponents.rows.ChartA
 import com.sahansenvar.feature.trading.presentation.screens.chartScreen.chartAndInfoTabs.ChartTabPage
 import com.sahansenvar.feature.trading.presentation.screens.chartScreen.chartAndInfoTabs.InfoTabPage
 import com.sahansenvar.feature.trading.presentation.uiStates.ChartUiState
-import com.sahansenvar.feature.trading.presentation.uiStates.OrderBookUiState
 import com.sahansenvar.feature.trading.presentation.viewModels.ChartViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -24,7 +28,14 @@ fun ChartScreen(
     viewModel: ChartViewModel = inject(),
     navigator: TradingNavigator = inject(),
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle(initialValue = ChartUiState())
+    // WARNING: collectAsState extention and all its derivatives doesnt work. Therefore I have to make that
+    var state by remember { mutableStateOf(ChartUiState())}
+    CoroutineScope(Dispatchers.IO).launch{
+        viewModel.state.collect{
+            if( it != ChartUiState())
+                state = it
+        }
+    }
     ChartPage(
         candles = state.candles,
         orderbook = state.orderBook
@@ -48,7 +59,7 @@ fun ChartPage(
     ChartAndInfoTabRow(
         modifier = Modifier
             .then(modifier)
-            .fillMaxSize()
+            .fillMaxSize(.4f)
     ) { currentPage ->
         when (currentPage) {
             ChartAndInfoTabs.Chart.ordinal -> ChartTabPage(

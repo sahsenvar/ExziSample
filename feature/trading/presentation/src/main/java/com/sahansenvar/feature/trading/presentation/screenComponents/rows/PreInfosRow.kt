@@ -36,14 +36,14 @@ fun PreInfosRow(
             )
             Row {
                 ExziText(
-                    modifier = Modifier.padding(bottom = 10.dp),
-                    text = values.lastValue,
+                    modifier = Modifier.padding(bottom = 10.dp, end = 5.dp),
+                    text = "=$${values.dollarEquivalent}",
                     size = 13.sp,
                     color = Color(191, 194, 197)
                 )
                 ExziText(
                     modifier = Modifier,
-                    text = values.lastValue,
+                    text = "${if (values.lastChangingDirection == BuyOrSellPosition.Buy) "+" else "-"}${values.lastChanging}",
                     size = 11.sp,
                     color = Color(0, 178, 124)
                 )
@@ -53,21 +53,33 @@ fun PreInfosRow(
         Row {
             Column(Modifier.padding(end = 10.dp)) {
                 ExziText(text = "24h High", size = 9.5.sp, color = Color(137, 143, 148))
-                ExziText(text = "24h Amount(${values.unitPair.first}", size = 11.sp, color = Color.White)
-                Spacer(modifier = Modifier
-                    .height(5.dp)
-                    .width(30.dp))
-                ExziText(text = "24h High", size = 9.5.sp, color = Color(137, 143, 148))
-                ExziText(text = "24h Amount(${values.unitPair.first}", size = 11.sp, color = Color.White)
+                ExziText(text = values.highestIn24h, size = 11.sp, color = Color.White)
+                Spacer(
+                    modifier = Modifier
+                        .height(5.dp)
+                        .width(30.dp)
+                )
+                ExziText(
+                    text = "24h Amount(${values.unitPair.first})",
+                    size = 9.5.sp,
+                    color = Color(137, 143, 148)
+                )
+                ExziText(text = values.amountIn24hForUnit1, size = 11.sp, color = Color.White)
             }
             Column {
-                ExziText(text = "24h High", size = 9.5.sp, color = Color(137, 143, 148))
-                ExziText(text = "24h Amount(${values.unitPair.first}", size = 11.sp, color = Color.White)
-                Spacer(modifier = Modifier
-                    .height(5.dp)
-                    .width(30.dp))
-                ExziText(text = "24h High", size = 9.5.sp, color = Color(137, 143, 148))
-                ExziText(text = "24h Amount(${values.unitPair.first}", size = 11.sp, color = Color.White)
+                ExziText(text = "24h Low", size = 9.5.sp, color = Color(137, 143, 148))
+                ExziText(text = values.lowestIn24h, size = 11.sp, color = Color.White)
+                Spacer(
+                    modifier = Modifier
+                        .height(5.dp)
+                        .width(30.dp)
+                )
+                ExziText(
+                    text = "24h Volume(${values.unitPair.second}",
+                    size = 9.5.sp,
+                    color = Color(137, 143, 148)
+                )
+                ExziText(text = values.volumeIn24hForUnit2, size = 11.sp, color = Color.White)
             }
         }
     }
@@ -79,7 +91,8 @@ fun PreInfosRow(
 private fun Preview() {
     PreInfosRow(
         modifier = Modifier.fillMaxWidth(),
-        values = values)
+        values = values
+    )
 }
 
 data class Values(

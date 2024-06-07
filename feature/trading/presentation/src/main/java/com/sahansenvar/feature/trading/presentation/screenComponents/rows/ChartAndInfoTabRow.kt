@@ -38,7 +38,8 @@ fun ChartAndInfoTabRow(
     Column {
         Box {
             HorizontalDivider(
-                modifier = modifier
+                modifier = Modifier
+                    .fillMaxWidth()
                     .align(Alignment.BottomCenter)
             )
             TabRow(
