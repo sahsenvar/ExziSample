@@ -6,14 +6,10 @@ import com.sahansenvar.core.common.basesAndMarkers.BaseViewModel
 import com.sahansenvar.core.common.response.onFailure
 import com.sahansenvar.core.common.response.onLoading
 import com.sahansenvar.core.common.response.onSuccess
-import com.sahansenvar.feature.trading.domain.usecases.GetOrderBookUseCase
 import com.sahansenvar.feature.trading.domain.usecases.GetCandleInfoUseCase
+import com.sahansenvar.feature.trading.domain.usecases.GetOrderBookUseCase
 import com.sahansenvar.feature.trading.presentation.uiStates.ChartUiState
-import com.sahansenvar.feature.trading.presentation.uiStates.OrderBookUiState
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
